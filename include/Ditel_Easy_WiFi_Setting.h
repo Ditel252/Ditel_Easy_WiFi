@@ -4,4 +4,3 @@
 
 //Configuration in network detection
 #define SERIAL_SPEED    115200      //Serial monitor speed
-#define NUMBER_OF_SCAN_NETWORK  64  //Number of networks to detect

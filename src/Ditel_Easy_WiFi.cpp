@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include "Ditel_Easy_WiFi.h"
 
-Ditel_Easy_WiFi::Network *(Ditel_Easy_WiFi::allocateMemoryForScan()){
+Ditel_Easy_WiFi::Network *(Ditel_Easy_WiFi::allocateMemoryForScan(uint16_t _numberOfMemoryForAllocate)){
     Ditel_Easy_WiFi::Network *_detectedVariable;
-    _detectedVariable = (Ditel_Easy_WiFi::Network *)malloc(sizeof(Ditel_Easy_WiFi::Network) * NUMBER_OF_SCAN_NETWORK);
+    _detectedVariable = (Ditel_Easy_WiFi::Network *)malloc(sizeof(Ditel_Easy_WiFi::Network) * _numberOfMemoryForAllocate);
 
-    for(int i = 0; i < NUMBER_OF_SCAN_NETWORK; i++){
+    for(int i = 0; i < _numberOfMemoryForAllocate; i++){
         strcpy((_detectedVariable + i)->SSID, "UNKNOWN");
         (_detectedVariable + i)->RSSI = 0;
         (_detectedVariable + i)->EncryptionType = WIFI_AUTH_OPEN;
@@ -15,13 +15,13 @@ Ditel_Easy_WiFi::Network *(Ditel_Easy_WiFi::allocateMemoryForScan()){
     return _detectedVariable;
 }
 
-int32_t Ditel_Easy_WiFi::scanNetwork(Ditel_Easy_WiFi::Network *_variableForStoringDetectedNetwork){
+int32_t Ditel_Easy_WiFi::scanNetwork(Ditel_Easy_WiFi::Network *_variableForStoringDetectedNetwork, uint16_t _numberOfScanNetWork){
 
     if(!WiFi.mode(WIFI_STA))
-        return -1;
+        return ERROR_SET_WIFI_MODE;
     
     if(!WiFi.disconnect())
-        return -1;
+        return ERROR_WIFI_DISCONNECTED;
 
     delay(100);
 
@@ -30,7 +30,7 @@ int32_t Ditel_Easy_WiFi::scanNetwork(Ditel_Easy_WiFi::Network *_variableForStori
     if(numberOfDetectedNetWorks == 0)
         return 0;    
 
-    for(int i = 0; i < (numberOfDetectedNetWorks > NUMBER_OF_SCAN_NETWORK ? NUMBER_OF_SCAN_NETWORK : numberOfDetectedNetWorks); i++){
+    for(int i = 0; i < (numberOfDetectedNetWorks > _numberOfScanNetWork ? _numberOfScanNetWork : numberOfDetectedNetWorks); i++){
         strcpy((_variableForStoringDetectedNetwork + i)->SSID, (WiFi.SSID(i)).c_str());
         (_variableForStoringDetectedNetwork + i)->RSSI = WiFi.RSSI(i);
         (_variableForStoringDetectedNetwork + i)->EncryptionType = WiFi.encryptionType(i);

@@ -1,6 +1,6 @@
 {
     "name": "Ditel Easy WiFi",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "This library is WiFi driver for ESP32 and Wio-Terminal",
     "keywords": "communication",
     "authors":

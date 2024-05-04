@@ -7,6 +7,11 @@
 #include <esp_wifi.h>
 #endif
 
+#define NUMBER_OF_SCAN_NETWORK  64  //Number of networks to detect
+
+#define ERROR_SET_WIFI_MODE  -1
+#define ERROR_WIFI_DISCONNECTED -2
+
 #define ERROR_WIFI_CONNECT 0x10
 #define ERROR_UDP_BEGIN 0x20
 
@@ -41,9 +46,9 @@ public:
 
     Network networkToConnect;
 
-    Network *(allocateMemoryForScan());
+    Network *(allocateMemoryForScan(uint16_t _numberOfMemoryForAllocate = NUMBER_OF_SCAN_NETWORK));
     void scanNetworkToSerial();
-    int32_t scanNetwork(Ditel_Easy_WiFi::Network *_variableForStoringDetectedNetwork);
+    int32_t scanNetwork(Ditel_Easy_WiFi::Network *_variableForStoringDetectedNetwork, uint16_t _numberOfScanNetWork = NUMBER_OF_SCAN_NETWORK);
     int connectToNetwork(Ditel_Easy_WiFi::Network _networkToConnect, uint16_t _timeoutOfTryConnect);
     void getMyIpAddress(char _myIpAddress[]);
 };
