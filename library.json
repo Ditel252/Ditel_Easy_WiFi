@@ -1,0 +1,17 @@
+{
+    "name": "Ditel Easy WiFi",
+    "version": "1.0.0",
+    "description": "This library is WiFi driver for ESP32 and Wio-Terminal",
+    "keywords": "communication",
+    "authors":
+    [
+      {
+        "name": "Ditel252",
+        "email": "Ditel252@gmail.com",
+        "url": "https://github.com/Ditel252"
+      }
+    ],
+    "homepage": "https://www.helloworld.org/",
+    "frameworks": "*",
+    "platforms": "*"
+  }
