@@ -12,9 +12,6 @@
 
 #define DWIFI_OK 0x00
 
-#define SERIAL_SPEED    115200
-#define NUMBER_OF_SCAN_NETWORK  64
-
 class _Ditel_Easy_WiFi_UDP{
 public:
     char *serverIpAddress;
