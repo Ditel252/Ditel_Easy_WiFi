@@ -42,8 +42,10 @@ int32_t Ditel_Easy_WiFi::scanNetwork(Ditel_Easy_WiFi::Network *_variableForStori
     return numberOfDetectedNetWorks;
 }
 
-void Ditel_Easy_WiFi::scanNetworkToSerial(){
-    Serial.begin(SERIAL_SPEED);
+void Ditel_Easy_WiFi::scanNetworkToSerial(bool _wasSerialBegun, uint32_t _serialSpeed){
+    if(!_wasSerialBegun)
+        Serial.begin(SERIAL_SPEED);
+        
     uint8_t enterKeyScanCount = 0;
 
     while(Serial.read() != 13){
@@ -79,8 +81,11 @@ int Ditel_Easy_WiFi::connectToNetwork(Ditel_Easy_WiFi::Network _networkToConnect
     networkToConnect = _networkToConnect;
 
     WiFi.disconnect(true);
-    WiFi.mode(WIFI_MODE_STA);
-    WiFi.begin(networkToConnect.SSID, networkToConnect.Password);
+    if(!WiFi.mode(WIFI_MODE_STA))
+        return ERROR_SET_WIFI_MODE;
+
+    if(WiFi.begin(networkToConnect.SSID, networkToConnect.Password) == WL_CONNECT_FAILED)
+        return ERROR_BEGIN_WIFI;
 
 #ifdef DITEL_ESP32
     esp_wifi_set_ps(WIFI_PS_NONE);
@@ -129,11 +134,13 @@ void _Ditel_Easy_WiFi_UDP::setServerInfo(String _serverIpAddress, uint16_t _serv
 }
 
 int _Ditel_Easy_WiFi_UDP::send(uint8_t *sendData, size_t sendDataSize){
-    wifiUdp.beginPacket(_Ditel_Easy_WiFi_UDP::serverIpAddress, _Ditel_Easy_WiFi_UDP::serverUdpPort);
+    if(wifiUdp.beginPacket(_Ditel_Easy_WiFi_UDP::serverIpAddress, _Ditel_Easy_WiFi_UDP::serverUdpPort))
+        ;
     wifiUdp.write(sendData, sendDataSize);
-    wifiUdp.endPacket();
+    if(!wifiUdp.endPacket())
+        ;
 
-    return 0;
+    return DWIFI_OK;
 }
 
 int _Ditel_Easy_WiFi_UDP::avaiable(){
